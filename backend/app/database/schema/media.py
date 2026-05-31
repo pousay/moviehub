@@ -18,7 +18,7 @@ class Media(Base):
     __tablename__ = "media"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    type: Mapped[MediaType] = mapped_column(Enum(MediaType), nullable=False)
+    type: Mapped[str] = mapped_column(Enum(MediaType), nullable=False)
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     rate: Mapped[float] = mapped_column(Float, nullable=False)
