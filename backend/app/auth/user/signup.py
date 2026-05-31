@@ -2,7 +2,7 @@ from fastapi import Depends
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.database.schema import User, Profile
-from backend.app.models.user import UserRequest, UserResponse
+from backend.app.models import UserRequest, UserResponse
 from backend.app.auth.user.hash import create_access_token, create_refresh_token
 from backend.app.auth.user.pswd import hash_password
 

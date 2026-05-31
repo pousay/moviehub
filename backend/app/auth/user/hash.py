@@ -3,7 +3,7 @@ from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from backend.app.config import settings
 from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, status
-from backend.app.models.tokens import TokenTypes
+from backend.app.models import TokenTypes
 
 
 def create_access_token(data: dict):

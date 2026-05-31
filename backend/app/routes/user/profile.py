@@ -1,10 +1,9 @@
 from fastapi import Depends
 from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
-from backend.app.models.profile import ProfileResponse, ProfileRequest
+from backend.app.models import ProfileResponse, ProfileRequest, AccessToken
 from backend.app.auth.user import check_access_token
 from backend.app.database.schema import User, Profile
-from backend.app.models.tokens import AccessToken
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Tuple

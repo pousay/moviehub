@@ -2,12 +2,11 @@ from fastapi import Depends, status, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from backend.app.database.connection import get_db
 from backend.app.database.schema import User
-from backend.app.models.user import UserResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from backend.app.auth.user.hash import decode_token, create_access_token
-from backend.app.models.tokens import TokenTypes, AccessToken
+from backend.app.models import TokenTypes, AccessToken, UserResponse
 from typing import Tuple
 
 security = HTTPBearer()

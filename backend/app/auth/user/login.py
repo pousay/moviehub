@@ -3,7 +3,7 @@ from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from backend.app.database.schema import User
-from backend.app.models.user import UserRequest, UserResponse
+from backend.app.models import UserRequest, UserResponse
 from backend.app.auth.user.hash import create_access_token, create_refresh_token
 from backend.app.auth.user.pswd import verify_password
 
