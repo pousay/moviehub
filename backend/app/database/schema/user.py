@@ -4,10 +4,16 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
 from typing import Optional
 
+
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+        index=True,
+    )
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)
@@ -23,3 +29,6 @@ class User(Base):
     profile: Mapped["Profile"] = relationship(back_populates="user", uselist=False)
     watchlist: Mapped[list["Watchlist"]] = relationship(back_populates="user")
     comments: Mapped[list["Comment"]] = relationship(back_populates="user")
+
+    def __repr__(self):
+        return f"User(id={self.id}, username='{self.username}')"

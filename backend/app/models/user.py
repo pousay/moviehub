@@ -24,7 +24,8 @@ class UserRequest(BaseUserModel): ...
 
 
 class UserResponse(BaseModel):
+    id: int
     username: str
     refresh_token: str
     access_token: str
-    exp_at: int
+    exp_at: Optional[datetime]
