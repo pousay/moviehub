@@ -16,6 +16,7 @@ class UserModel(BaseUserModel):
     watchlist: WatchlistModel
     exp_at: Optional[datetime]
     created_at: datetime
+    is_admin: bool
     refresh_token: str
     access_token: str
 

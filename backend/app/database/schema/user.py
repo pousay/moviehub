@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Integer, String, DateTime, func
+from sqlalchemy import Integer, String, DateTime, func, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
 from typing import Optional, ForwardRef
@@ -19,6 +19,7 @@ class User(Base):
         index=True,
     )
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)
     access_token: Mapped[str] = mapped_column(String, nullable=True)
