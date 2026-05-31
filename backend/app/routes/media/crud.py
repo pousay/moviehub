@@ -79,3 +79,20 @@ async def put_profile(
     await db.refresh(media)
 
     return MediaUpdateResponseModel.model_validate(media)
+
+
+#
+#
+#
+"""
+BUG
+
+every user now can create and update media
+we need to add some permissions to this
+only admin can create and update media
+users only can get media
+admin verification has to be added to the project
+"""
+#
+#
+#
