@@ -39,8 +39,3 @@ async def put_profile(
     await db.commit()
     await db.refresh(profile)
     return ProfileResponse(**user.profile.__dict__, username=user.username)
-
-
-# @router.post("/refresh")
-# async def refresh(resp: UserResponse = Depends(refresh)):
-#     return resp
