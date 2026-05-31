@@ -1,4 +1,4 @@
-from pydantic import BaseModel, NameEmail, Field
+from pydantic import BaseModel, NameEmail, Field, field_serializer
 from typing import Optional
 
 
@@ -19,4 +19,6 @@ class ProfileResponse(ProfileModel):
 
 
 class ProfileRequest(BaseProfile):
-    pass
+    @field_serializer("email")
+    def serialize_email(self, email: NameEmail) -> str:
+        return email.email

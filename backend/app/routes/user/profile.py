@@ -21,6 +21,7 @@ async def get_profile(
     data: Tuple[AccessToken, User] = Depends(check_access_token),
 ):
     _token, user = data
+
     return ProfileResponse(**user.profile.__dict__, username=user.username)
 
 
