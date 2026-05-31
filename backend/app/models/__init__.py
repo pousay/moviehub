@@ -6,6 +6,7 @@ from .media import (
     MediaResponseModel,
     MediaUpdateModel,
     MediaCreateResponseModel,
+    MediaUpdateResponseModel,
 )
 from .profile import ProfileRequest, ProfileResponse
 from .tokens import AccessToken, TokenTypes, RefreshToken
