@@ -10,3 +10,4 @@ exclude=
     alembic.in,
     .env,
     .env.example,
+    venv

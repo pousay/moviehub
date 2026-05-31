@@ -1,5 +1,5 @@
 from fastapi import Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import UserResponse
 from backend.app.auth.user import signup_user, login_user, refresh

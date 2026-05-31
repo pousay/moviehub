@@ -20,7 +20,8 @@ class UserModel(BaseUserModel):
     access_token: str
 
 
-class UserRequest(BaseUserModel): ...
+class UserRequest(BaseUserModel):
+    pass
 
 
 class UserResponse(BaseModel):

@@ -3,6 +3,11 @@ from sqlalchemy import Integer, String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
 from typing import Optional
+from typing import ForwardRef
+
+Profile = ForwardRef("Profile")
+Watchlist = ForwardRef("Watchlist")
+Comment = ForwardRef("Comment")
 
 
 class User(Base):
@@ -26,9 +31,9 @@ class User(Base):
         server_default=func.now(),  # ← set by DB on insert
         nullable=False,
     )
-    profile: Mapped["Profile"] = relationship(back_populates="user", uselist=False)
-    watchlist: Mapped[list["Watchlist"]] = relationship(back_populates="user")
-    comments: Mapped[list["Comment"]] = relationship(back_populates="user")
+    profile: Mapped[Profile] = relationship(back_populates="user", uselist=False)
+    watchlist: Mapped[list[Watchlist]] = relationship(back_populates="user")
+    comments: Mapped[list[Comment]] = relationship(back_populates="user")
 
     def __repr__(self):
         return f"User(id={self.id}, username='{self.username}')"

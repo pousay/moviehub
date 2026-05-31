@@ -1,4 +1,4 @@
-from pydantic import BaseModel, NameEmail
+from pydantic import BaseModel
 from .media import MediaModel
 
 

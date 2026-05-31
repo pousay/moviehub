@@ -1,6 +1,9 @@
 from sqlalchemy import Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
+from typing import ForwardRef
+
+User = ForwardRef("User")
 
 
 class Profile(Base):
@@ -13,4 +16,4 @@ class Profile(Base):
     sex: Mapped[bool] = mapped_column(Boolean, nullable=True)
     phone: Mapped[str] = mapped_column(String(20), nullable=True)
 
-    user: Mapped["User"] = relationship(back_populates="profile")
+    user: Mapped[User] = relationship(back_populates="profile")

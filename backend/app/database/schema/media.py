@@ -2,6 +2,11 @@ from sqlalchemy import Integer, String, Float, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
 import enum
+from typing import ForwardRef
+
+Link = ForwardRef("Link")
+Watchlist = ForwardRef("Watchlist")
+Comment = ForwardRef("Comment")
 
 
 class MediaType(enum.Enum):
@@ -21,6 +26,6 @@ class Media(Base):
     duration: Mapped[int] = mapped_column(Integer, nullable=False)  # minutes
     country: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    links: Mapped[list["Link"]] = relationship(back_populates="media")
-    watchlists: Mapped[list["Watchlist"]] = relationship(back_populates="media")
-    comments: Mapped[list["Comment"]] = relationship(back_populates="media")
+    links: Mapped[list[Link]] = relationship(back_populates="media")
+    watchlists: Mapped[list[Watchlist]] = relationship(back_populates="media")
+    comments: Mapped[list[Comment]] = relationship(back_populates="media")

@@ -2,6 +2,11 @@ from sqlalchemy import Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 from backend.app.database import Base
+from typing import ForwardRef
+
+User = ForwardRef("User")
+Media = ForwardRef("Media")
+Comment = ForwardRef("Comment")
 
 
 class Comment(Base):
@@ -14,9 +19,9 @@ class Comment(Base):
         ForeignKey("comments.id"), nullable=True
     )
 
-    user: Mapped["User"] = relationship(back_populates="comments")
-    media: Mapped["Media"] = relationship(back_populates="comments")
-    parent_reply: Mapped[Optional["Comment"]] = relationship(
+    user: Mapped[User] = relationship(back_populates="comments")
+    media: Mapped[Media] = relationship(back_populates="comments")
+    parent_reply: Mapped[Optional[Comment]] = relationship(
         back_populates="replies", remote_side="Comment.id"
     )
-    replies: Mapped[list["Comment"]] = relationship(back_populates="parent_reply")
+    replies: Mapped[list[Comment]] = relationship(back_populates="parent_reply")

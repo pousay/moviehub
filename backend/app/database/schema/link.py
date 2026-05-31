@@ -1,6 +1,9 @@
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
+from typing import ForwardRef
+
+Media = ForwardRef("Media")
 
 
 class Link(Base):
@@ -12,4 +15,4 @@ class Link(Base):
     season: Mapped[int] = mapped_column(Integer, nullable=True)  # None for movies
     episode: Mapped[int] = mapped_column(Integer, nullable=True)  # None for movies
 
-    media: Mapped["Media"] = relationship(back_populates="links")
+    media: Mapped[Media] = relationship(back_populates="links")
