@@ -41,3 +41,9 @@ class MediaCreateResponseModel(MediaCreateModel):
 class MediaResponseModel(MediaModel):
     model_config = ConfigDict(from_attributes=True, use_enum_values=True)
     type: str
+
+
+class MediaUpdateResponseModel(MediaUpdateModel):
+    model_config = ConfigDict(from_attributes=True, use_enum_values=True)
+    id: int
+    type: str

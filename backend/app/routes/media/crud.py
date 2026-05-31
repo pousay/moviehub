@@ -6,6 +6,8 @@ from backend.app.models import (
     AccessToken,
     MediaCreateModel,
     MediaCreateResponseModel,
+    MediaUpdateModel,
+    MediaUpdateResponseModel,
 )
 from backend.app.auth.user import check_access_token
 from backend.app.database.schema import User, Media
@@ -55,17 +57,25 @@ async def get_media(
     return MediaCreateResponseModel.model_validate(media_db)
 
 
-# @router.put("/profile", response_model=ProfileResponse)
-# async def put_profile(
-#     request: ProfileRequest,
-#     data: Tuple[AccessToken, User] = Depends(check_access_token),
-#     db: AsyncSession = Depends(get_db),
-# ):
-#     _token, user = data
-#     profile: Profile = user.profile
-#     for field, value in request.model_dump(exclude_unset=True).items():
-#         setattr(profile, field, value)
-#     db.add(profile)
-#     await db.commit()
-#     await db.refresh(profile)
-#     return ProfileResponse(**user.profile.__dict__, username=user.username)
+@router.put("/update", response_model=MediaUpdateResponseModel)
+async def put_profile(
+    media_id: int,
+    request: MediaUpdateModel,
+    data: Tuple[AccessToken, User] = Depends(check_access_token),
+    db: AsyncSession = Depends(get_db),
+):
+    _token, user = data
+
+    result = await db.execute(
+        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+    )
+    media: Media = result.scalars().first()
+
+    for field, value in request.model_dump(exclude_unset=True).items():
+        setattr(media, field, value)
+
+    db.add(media)
+    await db.commit()
+    await db.refresh(media)
+
+    return MediaUpdateResponseModel.model_validate(media)
