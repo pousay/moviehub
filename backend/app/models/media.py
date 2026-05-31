@@ -39,4 +39,5 @@ class MediaCreateResponseModel(MediaCreateModel):
 
 
 class MediaResponseModel(MediaModel):
-    pass
+    model_config = ConfigDict(from_attributes=True, use_enum_values=True)
+    type: str

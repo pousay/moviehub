@@ -12,6 +12,7 @@ from backend.app.database.schema import User, Media
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from typing import Tuple
 
 router = APIRouter(
@@ -30,10 +31,12 @@ async def get_media(
 ):
     _token, user = data
 
-    result = await db.execute(select(Media).filter_by(id=media_id))
+    result = await db.execute(
+        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+    )
     media = result.scalars().first()
 
-    return MediaResponseModel(**media.__dict__, username=user.username)
+    return MediaResponseModel.model_validate(media)
 
 
 @router.post("/new", response_model=MediaCreateResponseModel)
