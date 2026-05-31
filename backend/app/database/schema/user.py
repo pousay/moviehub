@@ -2,8 +2,7 @@ from datetime import datetime
 from sqlalchemy import Integer, String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
-from typing import Optional
-from typing import ForwardRef
+from typing import Optional, ForwardRef
 
 Profile = ForwardRef("Profile")
 Watchlist = ForwardRef("Watchlist")

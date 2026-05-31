@@ -1,8 +1,7 @@
 from sqlalchemy import Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import Optional
+from typing import Optional, ForwardRef
 from backend.app.database import Base
-from typing import ForwardRef
 
 User = ForwardRef("User")
 Media = ForwardRef("Media")
