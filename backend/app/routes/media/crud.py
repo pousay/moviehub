@@ -28,7 +28,9 @@ security = HTTPBearer()
 
 def check_if_media_exists(media: Optional[Media]) -> Literal[True]:
     if media is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="No Media Was Found"
+        )
 
     return True
 
@@ -91,5 +93,6 @@ async def put_profile(
     await db.refresh(media)
 
     return MediaUpdateResponseModel.model_validate(media)
+
 
 """no bug till here"""
