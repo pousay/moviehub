@@ -19,7 +19,9 @@ class User(Base):
         index=True,
     )
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-    is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    is_admin: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false", nullable=False
+    )
     password: Mapped[str] = mapped_column(String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)
     access_token: Mapped[str] = mapped_column(String, nullable=True)
