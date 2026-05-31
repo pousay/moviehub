@@ -7,9 +7,9 @@ from backend.app.routes import user_auth_router, user_profile_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("\t\t started \t\t")
+    print("\n\t started \n\t")
     yield
-    print("\t\t ended \t\t")
+    print("\n\t ended \n\t")
 
 
 tags = [{"name": "tasks", "description": "task management"}]
