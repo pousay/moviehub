@@ -8,9 +8,9 @@ class Profile(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    fullname: Mapped[str] = mapped_column(String(100), nullable=False)
-    email: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
-    sex: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    fullname: Mapped[str] = mapped_column(String(100), nullable=True)
+    email: Mapped[str] = mapped_column(String(200), unique=True, nullable=True)
+    sex: Mapped[bool] = mapped_column(Boolean, nullable=True)
     phone: Mapped[str] = mapped_column(String(20), nullable=True)
 
     user: Mapped["User"] = relationship(back_populates="profile")

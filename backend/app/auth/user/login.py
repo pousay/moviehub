@@ -1,15 +1,15 @@
 from fastapi import Depends, HTTPException, status
 from backend.app.database import get_db
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from backend.app.database.schema import User
 from backend.app.models.user import UserRequest, UserResponse
-from backend.app.auth.user.tokens import create_access_token, create_refresh_token
+from backend.app.auth.user.hash import create_access_token, create_refresh_token
 from backend.app.auth.user.pswd import verify_password
 
 
 async def login_user(
-    request: UserRequest, db: Session = Depends(get_db)
+    request: UserRequest, db: AsyncSession = Depends(get_db)
 ) -> UserResponse:
     result = await db.execute(select(User).filter_by(username=request.username))
     user = result.scalars().first()
@@ -19,8 +19,10 @@ async def login_user(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )
 
-    access_token = create_access_token({"id": user.id, "username": user.username})
-    refresh_token = create_refresh_token({"id": user.id, "username": user.username})
+    access_token = create_access_token({"user_id": user.id, "username": user.username})
+    refresh_token = create_refresh_token(
+        {"user_id": user.id, "username": user.username}
+    )
 
     user.access_token = access_token
     user.refresh_token = refresh_token

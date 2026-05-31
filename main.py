@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from contextlib import asynccontextmanager
 from fastapi_swagger import patch_fastapi
-from backend.app.routes import user_router
+from backend.app.routes import user_auth_router, user_profile_router
 
 
 @asynccontextmanager
@@ -23,7 +23,8 @@ app = FastAPI(
 patch_fastapi(app, docs_url="/docs")
 
 
-app.include_router(user_router)
+app.include_router(user_auth_router)
+app.include_router(user_profile_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

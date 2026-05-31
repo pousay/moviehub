@@ -1,25 +1,36 @@
 from fastapi import Depends
 from backend.app.database import get_db
-from sqlalchemy.orm import Session
-from backend.app.database.schema import User
+from sqlalchemy.ext.asyncio import AsyncSession
+from backend.app.database.schema import User, Profile
 from backend.app.models.user import UserRequest, UserResponse
-from backend.app.auth.user.tokens import create_access_token, create_refresh_token
+from backend.app.auth.user.hash import create_access_token, create_refresh_token
 from backend.app.auth.user.pswd import hash_password
 
 
 async def signup_user(
-    request: UserRequest, db: Session = Depends(get_db)
+    request: UserRequest, db: AsyncSession = Depends(get_db)
 ) -> UserResponse:
     user = User(username=request.username, password=hash_password(request.password))
-    access_token = create_access_token({"id": user.id, "username": user.username})
-    refresh_token = create_refresh_token({"id": user.id, "username": user.username})
 
+    db.add(user)
+    # required for id generation
+    await db.flush()
+
+    access_token = create_access_token({"user_id": user.id, "username": user.username})
+    refresh_token = create_refresh_token(
+        {"user_id": user.id, "username": user.username}
+    )
     user.access_token = access_token
     user.refresh_token = refresh_token
 
-    db.add(user)
+    user_profile = Profile(
+        user_id=user.id,
+    )
+
+    db.add(user_profile)
     await db.commit()
     await db.refresh(user)
+    await db.refresh(user_profile)
 
     return UserResponse(
         id=user.id,

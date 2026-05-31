@@ -1,10 +1,22 @@
-from pydantic import BaseModel, NameEmail
+from pydantic import BaseModel, NameEmail, Field
+from typing import Optional
 
 
-class ProfileModel(BaseModel):
+class BaseProfile(BaseModel):
+    fullname: Optional[str] = Field(None)
+    email: Optional[NameEmail] = Field(None)
+    sex: Optional[bool] = Field(None)  # 1 men 0 female
+    phone: Optional[str] = Field(None, max_length=20)
+
+
+class ProfileModel(BaseProfile):
     id: int
     user_id: int
-    fullname: str
-    email: NameEmail
-    sex: bool  # 1 men 0 female
-    phone: str
+
+
+class ProfileResponse(ProfileModel):
+    username: Optional[str]
+
+
+class ProfileRequest(BaseProfile):
+    pass
