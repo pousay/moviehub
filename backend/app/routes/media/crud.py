@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
@@ -10,12 +10,13 @@ from backend.app.models import (
     MediaUpdateResponseModel,
 )
 from backend.app.auth.user import check_access_token
+from backend.app.auth.admin import is_admin
 from backend.app.database.schema import User, Media
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from typing import Tuple
+from typing import Tuple, Optional, Literal
 
 router = APIRouter(
     prefix="/media",
@@ -25,9 +26,16 @@ router = APIRouter(
 security = HTTPBearer()
 
 
+def check_if_media_exists(media: Optional[Media]) -> Literal[True]:
+    if media is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    return True
+
+
 @router.get("/get", response_model=MediaResponseModel)
 async def get_media(
-    data: Tuple[AccessToken, User] = Depends(check_access_token),
+    data: Tuple[AccessToken, User] = Depends(check_access_token),  # all users
     db: AsyncSession = Depends(get_db),
     media_id: int = 0,
 ):
@@ -38,13 +46,15 @@ async def get_media(
     )
     media = result.scalars().first()
 
+    check_if_media_exists(media)
+
     return MediaResponseModel.model_validate(media)
 
 
 @router.post("/new", response_model=MediaCreateResponseModel)
 async def get_media(
     media: MediaCreateModel,
-    data: Tuple[AccessToken, User] = Depends(check_access_token),
+    data: Tuple[AccessToken, User] = Depends(is_admin),
     db: AsyncSession = Depends(get_db),
 ):
     media_dict = media.model_dump()
@@ -61,7 +71,7 @@ async def get_media(
 async def put_profile(
     media_id: int,
     request: MediaUpdateModel,
-    data: Tuple[AccessToken, User] = Depends(check_access_token),
+    data: Tuple[AccessToken, User] = Depends(is_admin),
     db: AsyncSession = Depends(get_db),
 ):
     _token, user = data
@@ -71,6 +81,8 @@ async def put_profile(
     )
     media: Media = result.scalars().first()
 
+    check_if_media_exists(media)
+
     for field, value in request.model_dump(exclude_unset=True).items():
         setattr(media, field, value)
 
@@ -79,20 +91,3 @@ async def put_profile(
     await db.refresh(media)
 
     return MediaUpdateResponseModel.model_validate(media)
-
-
-#
-#
-#
-"""
-BUG
-
-every user now can create and update media
-we need to add some permissions to this
-only admin can create and update media
-users only can get media
-admin verification has to be added to the project
-"""
-#
-#
-#
