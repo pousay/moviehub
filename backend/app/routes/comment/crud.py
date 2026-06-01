@@ -32,7 +32,7 @@ def check_if_comment_exists(comment: Optional[Comment]) -> Literal[True]:
 
 
 def check_comment_ownership(comment: Comment, user: User) -> Literal[True]:
-    if comment.user_id != user.id or not user.is_admin:
+    if comment.user_id != user.id and not user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You can only modify your own comments",
@@ -54,11 +54,14 @@ async def get_comments(
             status_code=status.HTTP_404_NOT_FOUND, detail="Media not found"
         )
 
+    # 2 layer nested replies
     result = await db.execute(
         select(Comment)
-        .filter_by(media_id=media_id)
+        .filter_by(media_id=media_id, reply_id=None)
         .options(
+            selectinload(Comment.user),
             selectinload(Comment.replies).selectinload(Comment.user),
+            selectinload(Comment.replies).selectinload(Comment.replies),
         )
     )
     comments = result.scalars().all()

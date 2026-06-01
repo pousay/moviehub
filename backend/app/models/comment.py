@@ -16,6 +16,7 @@ class CommentUserModel(BaseModel):
 class CommentModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    content: str
     user_id: int
     media_id: int
     user: CommentUserModel
