@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional
-from .link import LinkModel
+from .link import BaseLinkModel
 from backend.app.utils import MediaTypes
 
 
@@ -17,13 +17,13 @@ class MediaCreateModel(BaseModel):
 
 class MediaModel(MediaCreateModel):
     id: int
-    links: Optional[List[LinkModel]]
+    links: Optional[List[BaseLinkModel]]
 
 
 class MediaUpdateModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
     type: Optional[MediaTypes] = Field(None)
-    links: Optional[List[LinkModel]] = Field(None)
+    links: Optional[List[BaseLinkModel]] = Field(None)
     title: Optional[str] = Field(None)
     year: Optional[int] = Field(None)
     rate: Optional[float] = Field(None)
@@ -49,5 +49,6 @@ class MediaUpdateResponseModel(MediaUpdateModel):
     type: str
 
 
-class MediaDeleteResponseModel(MediaCreateResponseModel):
-    pass
+class MediaDeleteResponseModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True, use_enum_values=True)
+    id: int

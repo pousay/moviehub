@@ -113,7 +113,6 @@ async def delete_media(
 
     await db.delete(media)
     await db.commit()
-    await db.refresh(media)
 
     return MediaDeleteResponseModel.model_validate(media)
 
