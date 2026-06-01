@@ -35,26 +35,8 @@ def check_if_media_exists(media: Optional[Media]) -> Literal[True]:
     return True
 
 
-@router.get("/get", response_model=MediaResponseModel)
-async def get_media(
-    data: Tuple[AccessToken, User] = Depends(check_access_token),  # all users
-    db: AsyncSession = Depends(get_db),
-    media_id: int = 0,
-):
-    _token, user = data
-
-    result = await db.execute(
-        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-    )
-    media = result.scalars().first()
-
-    check_if_media_exists(media)
-
-    return MediaResponseModel.model_validate(media)
-
-
 @router.post("/new", response_model=MediaCreateResponseModel)
-async def get_media(
+async def new_link(
     media: MediaCreateModel,
     data: Tuple[AccessToken, User] = Depends(is_admin),
     db: AsyncSession = Depends(get_db),
@@ -70,7 +52,7 @@ async def get_media(
 
 
 @router.put("/update", response_model=MediaUpdateResponseModel)
-async def put_profile(
+async def update_link(
     media_id: int,
     request: MediaUpdateModel,
     data: Tuple[AccessToken, User] = Depends(is_admin),
@@ -95,4 +77,23 @@ async def put_profile(
     return MediaUpdateResponseModel.model_validate(media)
 
 
-"""no bug till here"""
+@router.delete("/delete")
+async def delete_link(
+    media_id: int,
+    data: Tuple[AccessToken, User] = Depends(is_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    _token, user = data
+
+    result = await db.execute(
+        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+    )
+    media: Media = result.scalars().first()
+
+    check_if_media_exists(media)
+
+    await db.delete(media)
+    await db.commit()
+    await db.refresh(media)
+
+    return MediaUpdateResponseModel.model_validate(media)

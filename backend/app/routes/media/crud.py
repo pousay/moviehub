@@ -8,6 +8,7 @@ from backend.app.models import (
     MediaCreateResponseModel,
     MediaUpdateModel,
     MediaUpdateResponseModel,
+    MediaDeleteResponseModel,
 )
 from backend.app.auth.user import check_access_token
 from backend.app.auth.admin import is_admin
@@ -95,9 +96,7 @@ async def put_media(
     return MediaUpdateResponseModel.model_validate(media)
 
 
-@router.delete(
-    "/delete",
-)
+@router.delete("/delete", response_model=MediaDeleteResponseModel)
 async def delete_media(
     media_id: int,
     data: Tuple[AccessToken, User] = Depends(is_admin),
@@ -116,7 +115,7 @@ async def delete_media(
     await db.commit()
     await db.refresh(media)
 
-    return MediaUpdateResponseModel.model_validate(media)
+    return MediaDeleteResponseModel.model_validate(media)
 
 
 """no bug till here"""
