@@ -19,7 +19,7 @@ from sqlalchemy.orm import selectinload
 from typing import Tuple, Optional, Literal
 
 router = APIRouter(
-    prefix="/media",
+    prefix="/links",
     dependencies=[Depends(HTTPBearer())],
 )
 
@@ -70,7 +70,7 @@ async def get_media(
 
 
 @router.put("/update", response_model=MediaUpdateResponseModel)
-async def put_media(
+async def put_profile(
     media_id: int,
     request: MediaUpdateModel,
     data: Tuple[AccessToken, User] = Depends(is_admin),
@@ -89,30 +89,6 @@ async def put_media(
         setattr(media, field, value)
 
     db.add(media)
-    await db.commit()
-    await db.refresh(media)
-
-    return MediaUpdateResponseModel.model_validate(media)
-
-
-@router.delete(
-    "/delete",
-)
-async def delete_media(
-    media_id: int,
-    data: Tuple[AccessToken, User] = Depends(is_admin),
-    db: AsyncSession = Depends(get_db),
-):
-    _token, user = data
-
-    result = await db.execute(
-        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-    )
-    media: Media = result.scalars().first()
-
-    check_if_media_exists(media)
-
-    await db.delete(media)
     await db.commit()
     await db.refresh(media)
 
