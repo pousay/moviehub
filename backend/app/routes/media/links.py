@@ -106,6 +106,5 @@ async def delete_link(
 
     await db.delete(link)
     await db.commit()
-    await db.refresh(link)
 
     return ResponseDeleteLinkModel.model_validate(link)
