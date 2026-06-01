@@ -2,16 +2,14 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
-    MediaResponseModel,
+    ResponseLinkModel,
+    RequestCreateLinkModel,
+    RequestUpdateLinkModel,
+    ResponseCreateLinkModel,
     AccessToken,
-    MediaCreateModel,
-    MediaCreateResponseModel,
-    MediaUpdateModel,
-    MediaUpdateResponseModel,
 )
-from backend.app.auth.user import check_access_token
 from backend.app.auth.admin import is_admin
-from backend.app.database.schema import User, Media
+from backend.app.database.schema import User, Link, Media
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -26,7 +24,15 @@ router = APIRouter(
 security = HTTPBearer()
 
 
-def check_if_media_exists(media: Optional[Media]) -> Literal[True]:
+async def get_media(db: AsyncSession, media_id) -> Optional[Media]:
+    result = await db.execute(
+        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+    )
+    return result.scalars().first()
+
+
+async def check_if_media_exists(db: AsyncSession, media_id: int) -> Literal[True]:
+    media = await get_media(db, media_id)
     if media is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="No Media Was Found"
@@ -35,65 +41,67 @@ def check_if_media_exists(media: Optional[Media]) -> Literal[True]:
     return True
 
 
-@router.post("/new", response_model=MediaCreateResponseModel)
+@router.post("/new", response_model=ResponseCreateLinkModel)
 async def new_link(
-    media: MediaCreateModel,
+    link: RequestCreateLinkModel,
     data: Tuple[AccessToken, User] = Depends(is_admin),
     db: AsyncSession = Depends(get_db),
 ):
-    media_dict = media.model_dump()
+    await check_if_media_exists(db, link.media_id)
 
-    media_db = Media(**media_dict)
-    db.add(media_db)
+    link_dict = link.model_dump()
+
+    link_db = Link(**link_dict)
+    db.add(link_db)
     await db.commit()
-    await db.refresh(media_db)
+    await db.refresh(link_db)
 
-    return MediaCreateResponseModel.model_validate(media_db)
-
-
-@router.put("/update", response_model=MediaUpdateResponseModel)
-async def update_link(
-    media_id: int,
-    request: MediaUpdateModel,
-    data: Tuple[AccessToken, User] = Depends(is_admin),
-    db: AsyncSession = Depends(get_db),
-):
-    _token, user = data
-
-    result = await db.execute(
-        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-    )
-    media: Media = result.scalars().first()
-
-    check_if_media_exists(media)
-
-    for field, value in request.model_dump(exclude_unset=True).items():
-        setattr(media, field, value)
-
-    db.add(media)
-    await db.commit()
-    await db.refresh(media)
-
-    return MediaUpdateResponseModel.model_validate(media)
+    return ResponseCreateLinkModel.model_validate(link_db)
 
 
-@router.delete("/delete")
-async def delete_link(
-    media_id: int,
-    data: Tuple[AccessToken, User] = Depends(is_admin),
-    db: AsyncSession = Depends(get_db),
-):
-    _token, user = data
+# @router.put("/update", response_model=MediaUpdateResponseModel)
+# async def update_link(
+#     media_id: int,
+#     request: MediaUpdateModel,
+#     data: Tuple[AccessToken, User] = Depends(is_admin),
+#     db: AsyncSession = Depends(get_db),
+# ):
+#     _token, user = data
 
-    result = await db.execute(
-        select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-    )
-    media: Media = result.scalars().first()
+#     result = await db.execute(
+#         select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+#     )
+#     media: Media = result.scalars().first()
 
-    check_if_media_exists(media)
+#     check_if_media_exists(media)
 
-    await db.delete(media)
-    await db.commit()
-    await db.refresh(media)
+#     for field, value in request.model_dump(exclude_unset=True).items():
+#         setattr(media, field, value)
 
-    return MediaUpdateResponseModel.model_validate(media)
+#     db.add(media)
+#     await db.commit()
+#     await db.refresh(media)
+
+#     return MediaUpdateResponseModel.model_validate(media)
+
+
+# @router.delete("/delete")
+# async def delete_link(
+#     media_id: int,
+#     data: Tuple[AccessToken, User] = Depends(is_admin),
+#     db: AsyncSession = Depends(get_db),
+# ):
+#     _token, user = data
+
+#     result = await db.execute(
+#         select(Media).filter_by(id=media_id).options(selectinload(Media.links))
+#     )
+#     media: Media = result.scalars().first()
+
+#     check_if_media_exists(media)
+
+#     await db.delete(media)
+#     await db.commit()
+#     await db.refresh(media)
+
+#     return MediaUpdateResponseModel.model_validate(media)

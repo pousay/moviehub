@@ -1,5 +1,11 @@
 from .comment import CommentModel
-from .link import LinkModel
+from .link import (
+    BaseLinkModel,
+    RequestCreateLinkModel,
+    RequestUpdateLinkModel,
+    ResponseLinkModel,
+    ResponseCreateLinkModel,
+)
 from .media import (
     MediaModel,
     MediaCreateModel,

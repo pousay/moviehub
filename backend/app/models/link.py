@@ -1,19 +1,25 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional
 
 
-class BaseLinkModel(BaseModel)
-    id: int
+class RequestCreateLinkModel(BaseModel):
     media_id: int
     url: str
-    season: int
-    episode: int
+    season: Optional[int] = Field(None)
+    episode: Optional[int] = Field(None)
 
 
-class ResponseLinkModel(BaseLinkModel) : pass 
+class BaseLinkModel(RequestCreateLinkModel):
+    id: int
 
-class RequestCreateLinkModel(BaseLinkModel) : 
+
+class ResponseLinkModel(BaseLinkModel):
     pass
 
-class RequestUpdateLinkModel(BaseLinkModel) :
+
+class RequestUpdateLinkModel(BaseLinkModel):
     pass
 
+
+class ResponseCreateLinkModel(BaseLinkModel):
+    model_config = ConfigDict(from_attributes=True)
