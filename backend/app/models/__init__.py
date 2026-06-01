@@ -20,4 +20,9 @@ from .media import (
 from .profile import ProfileRequest, ProfileResponse
 from .tokens import AccessToken, TokenTypes, RefreshToken
 from .user import UserRequest, UserResponse
-from .watchlist import WatchlistModel
+from .watchlist import (
+    WatchlistModel,
+    WatchlistCreateModel,
+    WatchlistDeleteResponseModel,
+    WatchlistCreateReposnseModel,
+)
