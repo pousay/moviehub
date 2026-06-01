@@ -12,7 +12,7 @@ async def is_admin(
     db: AsyncSession = Depends(get_db),
 ) -> Tuple[AccessToken, User]:
     _token, user = data
-    if user.is_admin is None or user.is_admin == False:
+    if user.is_admin is None or user.is_admin is False:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "No Permisions")
 
     return data

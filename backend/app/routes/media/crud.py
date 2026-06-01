@@ -55,7 +55,7 @@ async def get_media(
 
 
 @router.post("/new", response_model=MediaCreateResponseModel)
-async def get_media(
+async def create_media(
     media: MediaCreateModel,
     data: Tuple[AccessToken, User] = Depends(is_admin),
     db: AsyncSession = Depends(get_db),

@@ -2,7 +2,6 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
-    ResponseLinkModel,
     RequestCreateLinkModel,
     RequestUpdateLinkModel,
     ResponseCreateLinkModel,
