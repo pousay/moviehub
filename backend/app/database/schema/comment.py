@@ -25,3 +25,7 @@ class Comment(Base):
         back_populates="replies", remote_side="Comment.id"
     )
     replies: Mapped[list[Comment]] = relationship(back_populates="parent_reply")
+
+    @property
+    def user_username(self):
+        return self.user.username

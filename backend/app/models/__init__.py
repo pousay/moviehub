@@ -1,4 +1,10 @@
-from .comment import CommentModel
+from .comment import (
+    CommentCreateModel,
+    CommentUpdateResponseModel,
+    CommentDeleteResponseModel,
+    CommentModel,
+    CommentUpdateModel,
+)
 from .link import (
     BaseLinkModel,
     RequestCreateLinkModel,
