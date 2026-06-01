@@ -7,6 +7,7 @@ from backend.app.routes import (
     user_profile_router,
     media_crud_router,
     media_links_router,
+    watchlist_router,
 )
 
 
@@ -32,7 +33,7 @@ app.include_router(user_auth_router)
 app.include_router(user_profile_router)
 app.include_router(media_crud_router)
 app.include_router(media_links_router)
-
+app.include_router(watchlist_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
