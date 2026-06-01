@@ -11,7 +11,7 @@ class WatchlistModel(BaseModel):
     media: Optional[MediaResponseModel] = None
 
 
-class WatchlistCreateReposnseModel(BaseModel):
+class WatchlistCreateResponseModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
     user_id: int

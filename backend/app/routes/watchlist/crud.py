@@ -3,7 +3,7 @@ from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
     AccessToken,
-    WatchlistCreateReposnseModel,
+    WatchlistCreateResponseModel,
     WatchlistModel,
     WatchlistDeleteResponseModel,
 )
@@ -65,7 +65,7 @@ async def get_watchlist(
     return [WatchlistModel.model_validate(w) for w in watchlists]
 
 
-@router.post("/new", response_model=WatchlistCreateReposnseModel)
+@router.post("/new", response_model=WatchlistCreateResponseModel)
 async def create_watchlist(
     media_id: int,
     data: Tuple[AccessToken, User] = Depends(check_access_token),
@@ -91,7 +91,7 @@ async def create_watchlist(
     await db.commit()
     await db.refresh(watchlist)
 
-    return WatchlistCreateReposnseModel.model_validate(watchlist)
+    return WatchlistCreateResponseModel.model_validate(watchlist)
 
 
 @router.delete("/delete", response_model=WatchlistDeleteResponseModel)

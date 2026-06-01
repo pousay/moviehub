@@ -23,5 +23,5 @@ from .user import UserRequest, UserResponse
 from .watchlist import (
     WatchlistModel,
     WatchlistDeleteResponseModel,
-    WatchlistCreateReposnseModel,
+    WatchlistCreateResponseModel,
 )
