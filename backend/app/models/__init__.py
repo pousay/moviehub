@@ -5,6 +5,8 @@ from .link import (
     RequestUpdateLinkModel,
     ResponseLinkModel,
     ResponseCreateLinkModel,
+    ResponseUpdateLinkModel,
+    ResponseDeleteLinkModel,
 )
 from .media import (
     MediaModel,

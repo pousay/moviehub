@@ -18,8 +18,18 @@ class ResponseLinkModel(BaseLinkModel):
 
 
 class RequestUpdateLinkModel(BaseLinkModel):
-    pass
+    url: str = Field(None)
+    season: Optional[int] = Field(None)
+    episode: Optional[int] = Field(None)
 
 
 class ResponseCreateLinkModel(BaseLinkModel):
     model_config = ConfigDict(from_attributes=True)
+
+
+class ResponseUpdateLinkModel(ResponseCreateLinkModel):
+    pass
+
+
+class ResponseDeleteLinkModel(BaseModel):
+    id: int

@@ -6,6 +6,8 @@ from backend.app.models import (
     RequestCreateLinkModel,
     RequestUpdateLinkModel,
     ResponseCreateLinkModel,
+    ResponseDeleteLinkModel,
+    ResponseUpdateLinkModel,
     AccessToken,
 )
 from backend.app.auth.admin import is_admin
@@ -59,49 +61,51 @@ async def new_link(
     return ResponseCreateLinkModel.model_validate(link_db)
 
 
-# @router.put("/update", response_model=MediaUpdateResponseModel)
-# async def update_link(
-#     media_id: int,
-#     request: MediaUpdateModel,
-#     data: Tuple[AccessToken, User] = Depends(is_admin),
-#     db: AsyncSession = Depends(get_db),
-# ):
-#     _token, user = data
+@router.put("/update", response_model=ResponseUpdateLinkModel)
+async def update_link(
+    link_id: int,
+    request: RequestUpdateLinkModel,
+    data: Tuple[AccessToken, User] = Depends(is_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    _token, user = data
 
-#     result = await db.execute(
-#         select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-#     )
-#     media: Media = result.scalars().first()
+    result = await db.execute(select(Link).filter_by(id=link_id))
+    link: Link = result.scalars().first()
 
-#     check_if_media_exists(media)
+    if not link:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Link not found"
+        )
 
-#     for field, value in request.model_dump(exclude_unset=True).items():
-#         setattr(media, field, value)
+    for field, value in request.model_dump(exclude_unset=True).items():
+        setattr(link, field, value)
 
-#     db.add(media)
-#     await db.commit()
-#     await db.refresh(media)
+    db.add(link)
+    await db.commit()
+    await db.refresh(link)
 
-#     return MediaUpdateResponseModel.model_validate(media)
+    return ResponseUpdateLinkModel.model_validate(link)
 
 
-# @router.delete("/delete")
-# async def delete_link(
-#     media_id: int,
-#     data: Tuple[AccessToken, User] = Depends(is_admin),
-#     db: AsyncSession = Depends(get_db),
-# ):
-#     _token, user = data
+@router.delete("/delete", response_model=ResponseDeleteLinkModel)
+async def delete_link(
+    link_id: int,
+    data: Tuple[AccessToken, User] = Depends(is_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    _token, user = data
 
-#     result = await db.execute(
-#         select(Media).filter_by(id=media_id).options(selectinload(Media.links))
-#     )
-#     media: Media = result.scalars().first()
+    result = await db.execute(select(Link).filter_by(id=link_id))
+    link: Link = result.scalars().first()
 
-#     check_if_media_exists(media)
+    if not link:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Link not found"
+        )
 
-#     await db.delete(media)
-#     await db.commit()
-#     await db.refresh(media)
+    await db.delete(link)
+    await db.commit()
+    await db.refresh(link)
 
-#     return MediaUpdateResponseModel.model_validate(media)
+    return ResponseDeleteLinkModel.model_validate(link)
