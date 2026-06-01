@@ -3,7 +3,6 @@ from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
     AccessToken,
-    WatchlistCreateModel,
     WatchlistCreateReposnseModel,
     WatchlistModel,
     WatchlistDeleteResponseModel,
@@ -60,7 +59,7 @@ async def get_watchlist(
     result = await db.execute(
         select(Watchlist)
         .filter_by(user_id=user.id)
-        .options(selectinload(Watchlist.media))
+        .options(selectinload(Watchlist.media).selectinload(Media.links))
     )
     watchlists = result.scalars().all()
     return [WatchlistModel.model_validate(w) for w in watchlists]
@@ -68,18 +67,18 @@ async def get_watchlist(
 
 @router.post("/new", response_model=WatchlistCreateReposnseModel)
 async def create_watchlist(
-    request: WatchlistCreateModel,
+    media_id: int,
     data: Tuple[AccessToken, User] = Depends(check_access_token),
     db: AsyncSession = Depends(get_db),
 ):
     _token, user = data
 
-    await check_if_media_exists(request.media_id, db)
+    await check_if_media_exists(media_id, db)
 
     existing = (
         (
             await db.execute(
-                select(Watchlist).filter_by(user_id=user.id, media_id=request.media_id)
+                select(Watchlist).filter_by(user_id=user.id, media_id=media_id)
             )
         )
         .scalars()
@@ -87,7 +86,7 @@ async def create_watchlist(
     )
     check_if_watchlist_exists(existing, False)
 
-    watchlist = Watchlist(user_id=user.id, media_id=request.media_id)
+    watchlist = Watchlist(user_id=user.id, media_id=media_id)
     db.add(watchlist)
     await db.commit()
     await db.refresh(watchlist)
@@ -104,7 +103,11 @@ async def delete_from_watchlist(
     _token, user = data
 
     watchlist = (
-        await db.execute(select(Watchlist).filter_by(id=watchlist_id, user_id=user.id))
+        (
+            await db.execute(
+                select(Watchlist).filter_by(id=watchlist_id, user_id=user.id)
+            )
+        )
         .scalars()
         .first()
     )
