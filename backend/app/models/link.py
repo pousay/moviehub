@@ -10,6 +10,7 @@ class RequestCreateLinkModel(BaseModel):
 
 
 class BaseLinkModel(RequestCreateLinkModel):
+    model_config = ConfigDict(from_attributes=True)
     id: int
 
 
@@ -17,8 +18,8 @@ class ResponseLinkModel(BaseLinkModel):
     pass
 
 
-class RequestUpdateLinkModel(BaseLinkModel):
-    url: str = Field(None)
+class RequestUpdateLinkModel(BaseModel):
+    url: Optional[str] = Field(None)
     season: Optional[int] = Field(None)
     episode: Optional[int] = Field(None)
 
