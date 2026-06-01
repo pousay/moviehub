@@ -12,6 +12,7 @@ class Comment(Base):
     __tablename__ = "comments"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    content: Mapped[str] = mapped_column(nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     media_id: Mapped[int] = mapped_column(ForeignKey("media.id"), nullable=False)
     reply_id: Mapped[Optional[int]] = mapped_column(
