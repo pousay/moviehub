@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
 from contextlib import asynccontextmanager
-from fastapi_swagger import patch_fastapi
+
+# from fastapi_swagger import patch_fastapi
 from backend.app.routes import (
     user_auth_router,
     user_profile_router,
@@ -27,12 +28,12 @@ tags = [
 ]
 
 app = FastAPI(
-    docs_url=None,
+    # docs_url=None,
     openapi_tags=tags,
-    swagger_ui_oauth2_redirect_url=None,
+    # swagger_ui_oauth2_redirect_url=None,
     lifespan=lifespan,
 )
-patch_fastapi(app, docs_url="/docs")
+# patch_fastapi(app, docs_url="/docs")
 
 
 app.include_router(user_auth_router)
