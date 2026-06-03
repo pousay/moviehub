@@ -19,7 +19,12 @@ async def lifespan(app: FastAPI):
     print("\n\t ended \n\t")
 
 
-tags = [{"name": "moviehub api", "description": "task management"}]
+tags = [
+    {
+        "name": "moviehub api",
+        "description": "moviehub api to CRUD links, comments, media, users and etc with authentication",
+    }
+]
 
 app = FastAPI(
     docs_url=None,
