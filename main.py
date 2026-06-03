@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import uvicorn
 from contextlib import asynccontextmanager
 
 # from fastapi_swagger import patch_fastapi
@@ -42,6 +41,3 @@ app.include_router(media_crud_router)
 app.include_router(media_links_router)
 app.include_router(watchlist_router)
 app.include_router(comment_router)
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
