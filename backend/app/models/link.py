@@ -6,7 +6,6 @@ class RequestCreateLinkModel(BaseModel):
     media_id: int
     url: str
     season: Optional[int] = Field(None)
-    episode: Optional[int] = Field(None)
 
 
 class BaseLinkModel(RequestCreateLinkModel):
@@ -21,7 +20,6 @@ class ResponseLinkModel(BaseLinkModel):
 class RequestUpdateLinkModel(BaseModel):
     url: Optional[str] = Field(None)
     season: Optional[int] = Field(None)
-    episode: Optional[int] = Field(None)
 
 
 class ResponseCreateLinkModel(BaseLinkModel):
