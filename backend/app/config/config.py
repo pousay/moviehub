@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ACCESS_EXP_HOURS: int
     REFRESH_EXP_DAYS: int
     TMDB_API_KEY: str
+    TMDB_API_TOKEN: str
 
     model_config = SettingsConfigDict(env_file=path)
 
