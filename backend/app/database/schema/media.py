@@ -1,4 +1,5 @@
-from sqlalchemy import Integer, String, Float, Enum
+from sqlalchemy import Integer, String, Float, Enum, func, DateTime
+from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.database import Base
 import enum
@@ -25,6 +26,12 @@ class Media(Base):
     detail: Mapped[str] = mapped_column(String(1000), nullable=True)
     duration: Mapped[int] = mapped_column(Integer, nullable=False)  # minutes
     country: Mapped[str] = mapped_column(String(100), nullable=False)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),  # ← set by DB on insert
+        nullable=False,
+    )
 
     links: Mapped[list[Link]] = relationship(back_populates="media")
     watchlists: Mapped[list[Watchlist]] = relationship(back_populates="media")

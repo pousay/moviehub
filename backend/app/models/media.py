@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional
 from .link import BaseLinkModel
 from backend.app.utils import MediaTypes
+from datetime import datetime
 
 
 class MediaCreateModel(BaseModel):
@@ -36,6 +37,7 @@ class MediaCreateResponseModel(MediaCreateModel):
     model_config = ConfigDict(from_attributes=True, use_enum_values=True)
     id: int
     type: str
+    created_at: datetime
 
 
 class MediaResponseModel(MediaModel):

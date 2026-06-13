@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
+from datetime import datetime
 
 
 class CommentCreateModel(BaseModel):
@@ -22,6 +23,8 @@ class CommentModel(BaseModel):
     user: CommentUserModel
     reply_id: Optional[int] = None
     replies: Optional[List["CommentModel"]] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
 
 class CommentUpdateModel(BaseModel):
