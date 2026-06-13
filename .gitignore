@@ -1,3 +1,7 @@
 __pycache__
 .env
 venv
+
+template.html
+download.html
+test.py

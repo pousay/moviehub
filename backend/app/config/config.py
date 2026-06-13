@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_EXP_HOURS: int
     REFRESH_EXP_DAYS: int
+    TMDB_API_KEY: str
 
     model_config = SettingsConfigDict(env_file=path)
 
