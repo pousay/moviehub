@@ -7,30 +7,67 @@ from datetime import datetime
 
 class MediaCreateModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
+
     type: MediaTypes
     title: str
     year: int
-    rate: float
-    detail: str
     duration: int
-    country: str
+    country: Optional[str] = Field(None)
+
+    imdb_id: Optional[str] = Field(None)
+    tmdb_id: Optional[int] = Field(None)
+
+    imdb_rate: Optional[float] = Field(None)
+    tmdb_rate: Optional[float] = Field(None)
+    imdb_votes: Optional[int] = Field(None)
+    tmdb_votes: Optional[int] = Field(None)
+    popularity: Optional[float] = Field(None)
+
+    overview: Optional[str] = Field(None)
+    tagline: Optional[str] = Field(None)
+    genres: Optional[str] = Field(None)
+
+    poster: Optional[str] = Field(None)
+    backdrop: Optional[str] = Field(None)
+
+    total_seasons: Optional[int] = Field(None)
+    total_episodes: Optional[int] = Field(None)
 
 
 class MediaModel(MediaCreateModel):
     id: int
-    links: Optional[List[BaseLinkModel]]
+    links: Optional[List[BaseLinkModel]] = Field(None)
 
 
 class MediaUpdateModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
+
     type: Optional[MediaTypes] = Field(None)
-    links: Optional[List[BaseLinkModel]] = Field(None)
     title: Optional[str] = Field(None)
     year: Optional[int] = Field(None)
-    rate: Optional[float] = Field(None)
-    detail: Optional[str] = Field(None)
     duration: Optional[int] = Field(None)
     country: Optional[str] = Field(None)
+
+    imdb_id: Optional[str] = Field(None)
+    tmdb_id: Optional[int] = Field(None)
+
+    imdb_rate: Optional[float] = Field(None)
+    tmdb_rate: Optional[float] = Field(None)
+    imdb_votes: Optional[int] = Field(None)
+    tmdb_votes: Optional[int] = Field(None)
+    popularity: Optional[float] = Field(None)
+
+    overview: Optional[str] = Field(None)
+    tagline: Optional[str] = Field(None)
+    genres: Optional[str] = Field(None)
+
+    poster: Optional[str] = Field(None)
+    backdrop: Optional[str] = Field(None)
+
+    total_seasons: Optional[int] = Field(None)
+    total_episodes: Optional[int] = Field(None)
+
+    links: Optional[List[BaseLinkModel]] = Field(None)
 
 
 class MediaCreateResponseModel(MediaCreateModel):
