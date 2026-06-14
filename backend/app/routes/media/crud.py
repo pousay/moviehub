@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import HTTPBearer
 from fastapi.routing import APIRouter
 from backend.app.models import (
@@ -15,7 +15,7 @@ from backend.app.auth.admin import is_admin
 from backend.app.database.schema import User, Media
 from backend.app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 from typing import Tuple, Optional, Literal
 
@@ -67,6 +67,24 @@ async def search_media(
     result = await db.execute(
         select(Media)
         .filter(Media.title.ilike(f"%{query}%"))
+        .options(selectinload(Media.links))
+    )
+    media_list = result.scalars().all()
+
+    return [MediaResponseModel.model_validate(m) for m in media_list]
+
+
+@router.get("/random", response_model=list[MediaResponseModel])
+async def get_random_media(
+    db: AsyncSession = Depends(get_db),
+    count: int = Query(10, ge=1, le=100),
+    min_rate: float = Query(0.0, ge=0.0, le=10.0),
+):
+    result = await db.execute(
+        select(Media)
+        .where(Media.imdb_rate >= min_rate)
+        .order_by(func.random())
+        .limit(count)
         .options(selectinload(Media.links))
     )
     media_list = result.scalars().all()
