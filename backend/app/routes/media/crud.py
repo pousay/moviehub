@@ -54,6 +54,26 @@ async def get_media(
     return MediaResponseModel.model_validate(media)
 
 
+@router.get("/search", response_model=list[MediaResponseModel])
+async def search_media(
+    data: Tuple[AccessToken, User] = Depends(check_access_token),
+    db: AsyncSession = Depends(get_db),
+    query: str = None,
+):
+    if query is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="BAD QUERY")
+    _token, user = data
+
+    result = await db.execute(
+        select(Media)
+        .filter(Media.title.ilike(f"%{query}%"))
+        .options(selectinload(Media.links))
+    )
+    media_list = result.scalars().all()
+
+    return [MediaResponseModel.model_validate(m) for m in media_list]
+
+
 @router.post("/new", response_model=MediaCreateResponseModel)
 async def create_media(
     media: MediaCreateModel,
