@@ -21,7 +21,7 @@ class Media(Base):
     type: Mapped[str] = mapped_column(Enum(MediaTypes), nullable=False)
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
-    duration: Mapped[int] = mapped_column(Integer, nullable=False)  # minutes
+    duration: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     country: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     imdb_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     tmdb_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
