@@ -1,4 +1,13 @@
-function App() {
-return <> <p className="text-red-900 text-3xl text-center mt-20">hello</p></>
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/Home";
+import Media from "./pages/Media";
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/media/:id" element={<Media />} />
+      <Route path="*" element={<Navigate to="/" replace />} />{" "}
+    </Routes>
+  );
 }
-export default App;
