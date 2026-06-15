@@ -9,3 +9,9 @@ export interface Link {
   id: number;
 }
 
+export interface DownloadLink {
+  quality: string;
+  codec: string;
+  url: string;
+  size: string | null;
+}

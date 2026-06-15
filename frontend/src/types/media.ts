@@ -1,4 +1,4 @@
-import type {Link} from "./link";
+import type { Link,DownloadLink } from "./link";
 
 export interface Media {
   type: string;
@@ -22,4 +22,12 @@ export interface Media {
   total_episodes: number;
   id: number;
   links: Link[];
+}
+
+
+
+export interface SeasonData {
+  season: number;
+  softsub_links: DownloadLink[];
+  dubbed_links: DownloadLink[];
 }

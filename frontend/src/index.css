@@ -197,3 +197,74 @@ body {
     grid-template-columns: repeat(4, 1fr) !important;
   }
 }
+
+.poster-glow {
+  box-shadow:
+    0 0 60px rgba(232, 64, 64, 0.18),
+    0 30px 80px rgba(0, 0, 0, 0.8);
+}
+
+.q-4k {
+  background: rgba(232, 64, 64, 0.18);
+  color: #ff6b6b;
+  border: 1px solid rgba(232, 64, 64, 0.35);
+}
+.q-1080p {
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+.q-720p {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.q-480p {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.dl-row {
+  transition: background 0.18s;
+}
+.dl-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.reply-thread {
+  border-left: 2px solid rgba(232, 64, 64, 0.25);
+  margin-left: 44px;
+  padding-left: 14px;
+}
+
+.tab-btn {
+  border-bottom: 2px solid transparent;
+  transition: all 0.18s;
+}
+.tab-btn.active {
+  color: #f0f0f5;
+  border-bottom: 2px solid #e84040;
+}
+.tab-btn:hover:not(.active) {
+  color: #f0f0f5;
+}
+
+.season-pill {
+  transition: all 0.15s;
+}
+.season-pill.active {
+  background: #e84040;
+  color: #fff;
+}
+.season-pill:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.comment-area:focus {
+  outline: none;
+  border-color: rgba(232, 64, 64, 0.5);
+}
+.comment-area::placeholder {
+  color: rgba(240, 240, 245, 0.3);
+}
