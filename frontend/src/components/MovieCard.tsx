@@ -1,3 +1,4 @@
+import type { Media } from "../types/media";
 import { IconPlay } from "./Icons";
 
 export interface Movie {
@@ -7,13 +8,13 @@ export interface Movie {
   desc: string;
 }
 
-export default function MovieCard({ movie }: { movie: Movie }) {
+export default function MovieCard({ media }: { media: Media }) {
   return (
     <div className="movie-card group relative aspect-2/3 cursor-pointer overflow-hidden rounded-[14px]">
       <img
         className="card-img block h-full w-full object-cover transition-transform duration-300"
-        src={movie.img}
-        alt={movie.title}
+        src={media.poster}
+        alt={media.title}
         loading="lazy"
       />
 
@@ -41,11 +42,18 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           transition-opacity duration-300
         "
       >
-        <span className="mb-1 inline-block rounded-full bg-white/15 px-2 py-[3px] text-[10px] font-semibold">
-          {movie.genre}
-        </span>
+        <div className="flex flex-wrap justify-center w-fit overflow-clip">
+          {media.genres.split(",").map((genre, index) => (
+            <span
+              key={index}
+              className="mb-1 w-fit text-nowrap inline-block rounded-full bg-white/15 px-2 py-[3px] text-[10px] font-semibold"
+            >
+              {genre}
+            </span>
+          ))}
+        </div>
 
-        <p className="mb-1 text-[13px] font-bold">{movie.title}</p>
+        <p className="mb-1 text-[13px] font-bold">{media.title}</p>
 
         <p
           className="mb-2.5 text-[11px] leading-[1.4] text-white/60"
@@ -56,7 +64,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
             overflow: "hidden",
           }}
         >
-          {movie.desc}
+          {media.overview}
         </p>
 
         <div className="flex justify-end">

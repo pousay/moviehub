@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 # from fastapi_swagger import patch_fastapi
 from backend.app.routes import (
@@ -41,3 +42,12 @@ app.include_router(media_crud_router)
 app.include_router(media_links_router)
 app.include_router(watchlist_router)
 app.include_router(comment_router)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or ["http://localhost:3000"] for specific frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

@@ -1,42 +1,39 @@
 import { useState, useEffect, useCallback } from "react";
 import { IconDownload } from "./Icons";
+import type { Media } from "../types/media";
 
-export default function HeroSlider() {
+export default function HeroSlider({ media }: { media: Media[] }) {
   const [idx, setIdx] = useState(0);
   const [opacity, setOpacity] = useState(1);
-
-  const slides = [
-    {
-      img: "test",
-      title: "test",
-      tags: ["hello"],
-      desc: "hello",
-    },
-  ];
-
-  const current = slides[idx];
+  const [current, setCurrent] = useState<Media | null>(null);
 
   const goTo = useCallback((next: number) => {
     setOpacity(0);
-
     setTimeout(() => {
       setIdx(next);
       setOpacity(1);
     }, 220);
   }, []);
 
-  const slide = (dir: number) =>
-    goTo((idx + dir + slides.length) % slides.length);
+  const slide = useCallback(
+    (dir: number) => {
+      goTo((idx + dir + media.length) % media.length);
+    },
+    [idx, media.length, goTo],
+  );
 
   useEffect(() => {
+    setCurrent(media[idx]);
     const timer = setInterval(() => slide(1), 6000);
     return () => clearInterval(timer);
-  }, [idx]);
+  }, [idx, media, slide]);
+
+  if (!current) return null;
 
   return (
     <div className="hero-height relative h-[280px] cursor-pointer overflow-hidden rounded-2xl">
       <img
-        src={current.img}
+        src={current.backdrop}
         alt={current.title}
         className="hero-img block h-full w-full object-cover transition-all duration-500 ease-in-out"
         style={{ opacity }}
@@ -50,14 +47,14 @@ export default function HeroSlider() {
           🔥 Now Trending
         </div>
 
-        {current.tags && (
+        {current.genres && (
           <div className="mb-3.5 flex gap-2">
-            {current.tags.map((tag) => (
+            {current.genres.split(",").map((genre) => (
               <span
-                key={tag}
+                key={genre}
                 className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-md"
               >
-                {tag}
+                {genre}
               </span>
             ))}
           </div>
@@ -67,12 +64,13 @@ export default function HeroSlider() {
           {current.title}
         </h1>
 
-        <p className="hidden-mobile mb-5 line-clamp-3 text-sm leading-6 text-white/60">
-          {current.desc}
+        <p className="hidden-mobile line-clamp-5 mb-5 text-sm leading-6 text-white/60">
+          {current.overview.slice(0, 300)}
+          {current.overview.length > 300 && "..."}
         </p>
 
         <div className="flex items-center gap-2.5">
-          <button className="flex h-11 cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-150">
+          <button className="hover:scale-105 ease-linear transition-transform duration-100 flex h-11 cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-150">
             <IconDownload />
             Download
           </button>
@@ -95,9 +93,8 @@ export default function HeroSlider() {
         ))}
       </div>
 
-      {/* Dots */}
       <div className="absolute top-4 right-5 flex items-center gap-1.5">
-        {slides.map((_, i) => (
+        {media.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}

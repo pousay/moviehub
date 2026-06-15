@@ -1,11 +1,7 @@
+import type { Media } from "../types/media";
 import { IconPlay } from "./Icons";
 
-interface ContinueItem {
-  name: string;
-  img: string;
-}
-
-export default function WatchListPanel({ items }: { items: ContinueItem[] }) {
+export default function WatchListPanel({ items }: { items: Media[] }) {
   return (
     <div
       className="
@@ -21,7 +17,7 @@ export default function WatchListPanel({ items }: { items: ContinueItem[] }) {
 
       {items.map((item) => (
         <div
-          key={item.name}
+          key={item.title}
           className="
             mx-1 flex cursor-pointer items-center gap-3
             border-b border-red-600/10
@@ -30,10 +26,10 @@ export default function WatchListPanel({ items }: { items: ContinueItem[] }) {
           "
         >
           <img
-            src={item.img}
-            alt={item.name}
+            src={item.backdrop}
+            alt={item.title}
             className="
-              h-[52px] w-[52px]
+              h-[62.5px] w-[62.5px]
               shrink-0 rounded-[10px]
               object-cover
             "
@@ -46,21 +42,22 @@ export default function WatchListPanel({ items }: { items: ContinueItem[] }) {
                 font-medium
               "
             >
-              {item.name}
+              {item.title}
             </p>
           </div>
 
           <button
             className="
-              flex h-7 w-7 shrink-0
+            hover:scale-125 ease-linear transition-transform duration-100
+              flex h-8 w-8 shrink-0
               cursor-pointer items-center justify-center
               rounded-full border-0
-              bg-white/10
-              text-[12px] text-red-600
+              bg-white/10 pl-1
+             text-red-500
               transition-colors duration-150
             "
           >
-            <IconPlay size={10} />
+            <IconPlay size={18} />
           </button>
         </div>
       ))}

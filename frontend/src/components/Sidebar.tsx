@@ -61,7 +61,7 @@ export default function Sidebar({ activeNav, onNavChange }: SidebarProps) {
           bg-[#e84040] text-lg font-black text-white
         "
       >
-        S
+        :)
       </div>
 
       {/* Nav icons */}

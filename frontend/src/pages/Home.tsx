@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SuggestionsGrid from "../components/SuggestionGrid";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import WatchListPanel from "../components/Watchlist";
 import HeroSlider from "../components/Hero";
+import { fetcher } from "../api/fetch";
 
 export default function Page() {
   const [activeNav, setActiveNav] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+
+  const [media, setMedia] = useState([]);
+
+  const fetchMedia = async () => {
+    try {
+      const response = await fetcher.get("/media/random?count=4&min_rate=9");
+      setMedia(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedia();
+  }, []);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#0a0a0f] font-['Inter',sans-serif] text-[#f0f0f5]">
@@ -32,12 +49,12 @@ export default function Page() {
               }}
               className="left-panel"
             >
-              <WatchListPanel items={[]} />
+              <WatchListPanel items={media} />
             </aside>
 
             <div>
-              <HeroSlider />
-              <SuggestionsGrid movies={[]} />
+              <HeroSlider media={media} />
+              <SuggestionsGrid media={media} />
             </div>
           </div>
         </main>

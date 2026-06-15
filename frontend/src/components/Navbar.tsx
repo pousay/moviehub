@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+import { fetcher } from "../api/fetch";
 import { IconSearch, IconBell } from "./Icons";
+import type { Profile } from "../types/profile";
 
 interface NavbarProps {
   activeTab: number;
@@ -7,6 +10,21 @@ interface NavbarProps {
 
 export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
   const tabs = ["All", "Movies", "TV Series"];
+  const [user, setUser] = useState<Profile | null>(null);
+
+  const fetchPFP = async () => {
+    try {
+      const response = await fetcher.get("/user/profile");
+      setUser(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPFP();
+  }, []);
 
   return (
     <header
@@ -56,9 +74,10 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
             onClick={() => onTabChange(i)}
             className={`
               nav-tab
-              h-9 cursor-pointer rounded-full border-0
-              px-[18px] text-sm font-medium
-              transition-all duration-150
+              h-9 cursor-pointer rounded-2xl border-0
+              hover:rounded-tl-2xl hover:rounded-br-2xl hover:rounded-bl-[0px] hover:rounded-tr-[0px]
+              px-[18px] mx-1 text-sm font-medium
+              transition-all duration-300 ease-linear
               ${
                 activeTab === i
                   ? "active"
@@ -112,14 +131,16 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
               text-xs font-bold text-white
             "
           >
-            AM
+            {user?.username.charAt(0).toUpperCase()}
           </div>
 
           <div className="hidden-mobile leading-none">
-            <p className="mb-1 text-[13px] font-semibold">Arfi Maulana</p>
+            <p className="mb-1 text-[13px] font-semibold">
+              {user?.fullname ? user.fullname : "User"}
+            </p>
 
             <p className="m-0 text-[11px] text-[rgba(240,240,245,0.45)]">
-              @arfimaulana_
+              @{user?.username}
             </p>
           </div>
         </div>
