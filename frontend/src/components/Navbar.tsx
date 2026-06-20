@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetcher } from "../api/base";
 import { IconSearch, IconBell } from "./Icons";
-import type { Profile } from "../types/profile";
 import { Link } from "react-router-dom";
+import AuthService, { type Profile } from "../api/auth";
 
 interface NavbarProps {
   activeTab: number;
@@ -13,23 +12,19 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
   const tabs = ["All", "Movies", "TV Series"];
   const [user, setUser] = useState<Profile | null>(null);
 
-  const fetchPFP = async () => {
-    try {
-      const response = await fetcher.get("/user/profile");
-      setUser(response.data);
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    const fetchProfile = async () => {
+      try {
+        const data = await AuthService.getProfile();
+        setUser(data);
+        // do something with data
+      } catch (e) {
+        // handle error — e.g. user is not logged in, just ignore or set null
+        console.error(e);
+      }
+    };
 
-    
-
-    fetchPFP();
+    fetchProfile();
   }, []);
 
   return (
@@ -97,7 +92,7 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
       </nav>
 
       <div className="ml-auto flex items-center gap-3">
-        {2 === 3 && (
+        {user && (
           <button
             className="
             relative flex h-[38px] w-[38px]
@@ -120,7 +115,7 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
             />
           </button>
         )}
-        {2 === 2 ? (
+        {!user ? (
           <Link
             to="login"
             className="bg-red-500 text-center flex items-center justify-center align-middle rounded mx-2 px-3 py-1  hover:scale-105 cursor-pointer"
@@ -132,7 +127,7 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
             className="
             flex cursor-pointer items-center gap-[10px]
             rounded-full border border-white/15
-            bg-white/10
+            bg-red-500/20
             py-[5px] pr-[14px] pl-[5px]
             transition-colors duration-150
           "
@@ -154,8 +149,8 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
                   fill="none"
                   className="pointer-events-none"
                 >
-                  <circle cx="20" cy="14" r="7" fill="#6B7280" />
-                  <ellipse cx="20" cy="34" rx="12" ry="9" fill="#6B7280" />
+                  <circle cx="20" cy="14" r="7" fill="#FFFFFF" />
+                  <ellipse cx="20" cy="34" rx="12" ry="9" fill="#FFFFFF" />
                 </svg>
               </div>{" "}
             </div>

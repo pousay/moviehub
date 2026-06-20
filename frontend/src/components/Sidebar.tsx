@@ -78,7 +78,13 @@ export default function Sidebar({ activeNav, onNavChange }: SidebarProps) {
 
       {/* Settings */}
       <div className="w-full px-3">
-        <SidebarButton icon={<IconSettings />} />
+        <SidebarButton
+          onClick={() => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+          }}
+          icon={<IconSettings />}
+        />
       </div>
     </aside>
   );

@@ -1,14 +1,12 @@
-// // services/media.service.ts
-// import { fetcher } from "./base";
+// services/media.service.ts
+import { fetcher } from "./base";
+import type { Media } from "../types/media";
 
-// export interface Media { /* your fields */ }
+const MediaService = {
+  getRandom: (count = 4, minRate = 7) =>
+    fetcher
+      .get<Media[]>("/media/random", { params: { count, min_rate: minRate } })
+      .then((r) => r.data),
+};
 
-// const MediaService = {
-//   getAll: (params?: Record<string, unknown>) =>
-//     fetcher.get<Media[]>("/media/get", { params }).then(r => r.data),
-
-//   getById: (id: number) =>
-//     fetcher.get<Media>(`/media/${id}`).then(r => r.data),
-// };
-
-// export default MediaService;
+export default MediaService;

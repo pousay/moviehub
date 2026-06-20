@@ -4,25 +4,25 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import WatchListPanel from "../components/Watchlist";
 import HeroSlider from "../components/Hero";
-import { fetcher } from "../api/base";
+import MediaService from "../api/media";
+import type { Media } from "../types/media";
 
 export default function Page() {
   const [activeNav, setActiveNav] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
-  const [media, setMedia] = useState([]);
-
-  const fetchMedia = async () => {
-    try {
-      const response = await fetcher.get("/media/random?count=4&min_rate=9");
-      setMedia(response.data);
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [media, setMedia] = useState<Media[]>([]);
 
   useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const response = await MediaService.getRandom(4, 9);
+        setMedia(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchMedia();
   }, []);
 
