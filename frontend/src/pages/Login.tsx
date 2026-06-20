@@ -261,23 +261,8 @@ export default function Login() {
 
   return (
     <>
-      <div className="bg-cinematic" />
-      <div className="fixed inset-0 z-0 bg-black/30" />
-
-      <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none">
-        <div
-          style={{
-            width: 600,
-            height: 600,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(232,64,64,0.08) 0%, transparent 70%)",
-          }}
-        />
-      </div>
-
       <div
-        className="relative z-10 flex min-h-screen items-center justify-center p-4"
+        className="relative z-10 w-full flex min-h-screen items-center justify-center p-4"
         onKeyDown={onKeyDown}
       >
         <div className="w-full max-w-[420px]">

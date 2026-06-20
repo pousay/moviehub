@@ -1,10 +1,5 @@
-import {
-  IconSettings,
-  IconHome,
-  IconHeart,
-  IconDownload,
-  IconUser,
-} from "./Icons";
+import { Link } from "react-router-dom";
+import { IconSettings, IconHome, IconHeart, IconDownload } from "./Icons";
 
 interface SidebarProps {
   activeNav: number;
@@ -37,10 +32,11 @@ const SidebarButton = ({
 
 export default function Sidebar({ activeNav, onNavChange }: SidebarProps) {
   const navIcons = [
-    <IconHome />,
+    <Link to="/">
+      <IconHome />
+    </Link>,
     <IconHeart />,
     <IconDownload />,
-    <IconUser />,
   ];
 
   return (
@@ -77,15 +73,9 @@ export default function Sidebar({ activeNav, onNavChange }: SidebarProps) {
       </nav>
 
       {/* Settings */}
-      <div className="w-full px-3">
-        <SidebarButton
-          onClick={() => {
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("refresh_token");
-          }}
-          icon={<IconSettings />}
-        />
-      </div>
+      <Link to="/settings" className="w-full px-3">
+        <SidebarButton icon={<IconSettings />} />
+      </Link>
     </aside>
   );
 }

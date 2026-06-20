@@ -380,9 +380,6 @@ export default function Signup() {
 
   return (
     <>
-      <div className="bg-cinematic" />
-      <div className="fixed inset-0 z-0 bg-black/30" />
-
       <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none">
         <div
           style={{

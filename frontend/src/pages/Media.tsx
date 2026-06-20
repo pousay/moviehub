@@ -17,7 +17,7 @@ export default function Media() {
 
   const { id } = useParams();
 
-  const [media, setMedia] = useState<Media>({});
+  const [media, setMedia] = useState<Media | null>(null);
 
   const fetchMedia = async () => {
     try {
@@ -33,15 +33,11 @@ export default function Media() {
     fetchMedia();
   }, []);
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#0a0a0f] font-['Inter',sans-serif] text-[#f0f0f5]">
-      <div className="bg-cinematic" />
+    <>
+      <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
 
-      <div className="fixed inset-0 z-0 bg-black/20" />
-
-      <div className="relative z-10 flex min-h-screen">
-        <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
-
-        <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      {media ? (
         <main className="sm:ml-[72px] mt-[68px] w-full pb-24 sm:pb-10">
           <MediaHero media={media} />
           <div className="px-4 sm:px-8 -mt-32 sm:-mt-40 relative">
@@ -51,7 +47,9 @@ export default function Media() {
             </div>
           </div>
         </main>
-      </div>
-    </div>
+      ) : (
+        <NotFound />
+      )}
+    </>
   );
 }

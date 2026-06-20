@@ -16,7 +16,7 @@ export default function Page() {
   useEffect(() => {
     const fetchMedia = async () => {
       try {
-        const response = await MediaService.getRandom(4, 9);
+        const response = await MediaService.getRandom(12, 9);
         setMedia(response);
       } catch (err) {
         console.log(err);
@@ -27,40 +27,34 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#0a0a0f] font-['Inter',sans-serif] text-[#f0f0f5]">
-      <div className="bg-cinematic" />
+    <>
+      <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
 
-      <div className="fixed inset-0 z-0 bg-black/20" />
+      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="relative z-10 flex min-h-screen">
-        <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
+      <main className="mt-17 min-h-[calc(100vh-68px)] w-full p-4 pb-20 sm:ml-18 sm:p-7 sm:pb-7">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[280px_1fr]">
+          <aside
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 20,
+              position: "sticky",
+              top: 20,
+            }}
+            className="left-panel"
+          >
+            {media && <WatchListPanel items={media.slice(0, 4)} />}
+          </aside>
 
-        <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
-
-        <main className="mt-17 min-h-[calc(100vh-68px)] w-full p-4 pb-20 sm:ml-18 sm:p-7 sm:pb-7">
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[280px_1fr]">
-            <aside
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 20,
-                position: "sticky",
-                top: 20,
-              }}
-              className="left-panel"
-            >
-              <WatchListPanel items={media} />
-            </aside>
-
-            <div>
-              <HeroSlider media={media} />
-              <SuggestionsGrid media={media} />
-            </div>
+          <div>
+            <HeroSlider media={media.slice(4, 8)} />
+            <SuggestionsGrid media={media.slice(8)} />
           </div>
-        </main>
+        </div>
+      </main>
 
-        {/* <MobileNav activeNav={activeNav} onNavChange={setActiveNav} /> */}
-      </div>
-    </div>
+      {/* <MobileNav activeNav={activeNav} onNavChange={setActiveNav} /> */}
+    </>
   );
 }
