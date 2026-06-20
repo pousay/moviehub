@@ -4,7 +4,7 @@ export default function MediaHero({ media }: { media: Media }) {
   return (
     <div className="relative h-[260px] w-full overflow-hidden sm:h-[360px]">
       <img
-        src="/chairs.jpeg"
+        src={media.backdrop}
         alt={media.title}
         className="block h-full w-full object-cover object-top"
       />

@@ -102,6 +102,114 @@ const IconSettings = () => (
   </svg>
 );
 
+/* ── icons ── */
+
+const IconLock = () => (
+  <svg
+    width="17"
+    height="17"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <rect x="3" y="11" width="18" height="11" rx="2" />
+    <path d="M7 11V7a5 5 0 0110 0v4" />
+  </svg>
+);
+
+const IconEyeOpen = () => (
+  <svg
+    width="17"
+    height="17"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const IconEyeOff = () => (
+  <svg
+    width="17"
+    height="17"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+    <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+    <line x1="1" y1="1" x2="23" y2="23" />
+  </svg>
+);
+
+const IconArrow = () => (
+  <svg
+    width="16"
+    height="16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    viewBox="0 0 24 24"
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const IconSpinner = () => (
+  <svg
+    className="animate-spin"
+    width="18"
+    height="18"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="white"
+      strokeWidth="4"
+    />
+    <path className="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z" />
+  </svg>
+);
+
+const IconCheck = () => (
+  <svg
+    width="18"
+    height="18"
+    fill="none"
+    stroke="white"
+    strokeWidth="2.5"
+    viewBox="0 0 24 24"
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const IconAlert = () => (
+  <svg
+    width="16"
+    height="16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className="shrink-0"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="12" />
+    <line x1="12" y1="16" x2="12.01" y2="16" />
+  </svg>
+);
+
 export {
   IconBell,
   IconDownload,
@@ -111,4 +219,11 @@ export {
   IconSearch,
   IconSettings,
   IconUser,
+  IconAlert,
+  IconCheck,
+  IconSpinner,
+  IconEyeOff,
+  IconArrow,
+  IconEyeOpen,
+  IconLock,
 };

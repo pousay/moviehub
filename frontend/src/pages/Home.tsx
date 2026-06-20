@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import WatchListPanel from "../components/Watchlist";
 import HeroSlider from "../components/Hero";
-import { fetcher } from "../api/fetch";
+import { fetcher } from "../api/base";
 
 export default function Page() {
   const [activeNav, setActiveNav] = useState(0);

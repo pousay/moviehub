@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
 import MediaHero from "../components/MediaHero";
-import { fetcher } from "../api/fetch";
+import { fetcher } from "../api/base";
 import type { Media } from "../types/media";
 import MediaPoster from "../components/MediaPoster";
 import Toast from "../components/Toast";

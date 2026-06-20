@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetcher } from "../api/fetch";
+import { fetcher } from "../api/base";
 import { IconSearch, IconBell } from "./Icons";
 import type { Profile } from "../types/profile";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   activeTab: number;
@@ -23,6 +24,11 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
   };
 
   useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+    const refresh_token = localStorage.getItem("refresh_token");
+
+    
+
     fetchPFP();
   }, []);
 
@@ -91,59 +97,80 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
       </nav>
 
       <div className="ml-auto flex items-center gap-3">
-        <button
-          className="
+        {2 === 3 && (
+          <button
+            className="
             relative flex h-[38px] w-[38px]
             cursor-pointer items-center justify-center
             rounded-full border-0
             bg-white/10 text-[#f0f0f5]
             transition-colors duration-150
           "
-        >
-          <IconBell />
+          >
+            <IconBell />
 
-          <span
-            className="
+            <span
+              className="
               absolute top-[7px] right-[7px]
               h-[7px] w-[7px]
               rounded-full
               border-2 border-[#0a0a0f]
               bg-[#e84040]
             "
-          />
-        </button>
-
-        <div
-          className="
+            />
+          </button>
+        )}
+        {2 === 2 ? (
+          <Link
+            to="login"
+            className="bg-red-500 text-center flex items-center justify-center align-middle rounded mx-2 px-3 py-1  hover:scale-105 cursor-pointer"
+          >
+            login
+          </Link>
+        ) : (
+          <div
+            className="
             flex cursor-pointer items-center gap-[10px]
             rounded-full border border-white/15
             bg-white/10
             py-[5px] pr-[14px] pl-[5px]
             transition-colors duration-150
           "
-        >
-          <div
-            className="
-              avatar-grad
+          >
+            <div
+              className="
+              bg-red-500
               flex h-[30px] w-[30px] shrink-0
               items-center justify-center
               rounded-full
               text-xs font-bold text-white
             "
-          >
-            {user?.username.charAt(0).toUpperCase()}
-          </div>
+            >
+              <div className="w-10 h-10 text-center flex items-center justify-center align-middle rounded-full cursor-pointer m-2">
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  className="pointer-events-none"
+                >
+                  <circle cx="20" cy="14" r="7" fill="#6B7280" />
+                  <ellipse cx="20" cy="34" rx="12" ry="9" fill="#6B7280" />
+                </svg>
+              </div>{" "}
+            </div>
 
-          <div className="hidden-mobile leading-none">
-            <p className="mb-1 text-[13px] font-semibold">
-              {user?.fullname ? user.fullname : "User"}
-            </p>
+            <div className="hidden-mobile leading-none">
+              <p className="mb-1 text-[13px] font-semibold">
+                {user?.fullname ? user.fullname : "User"}
+              </p>
 
-            <p className="m-0 text-[11px] text-[rgba(240,240,245,0.45)]">
-              @{user?.username}
-            </p>
+              <p className="m-0 text-[11px] text-[rgba(240,240,245,0.45)]">
+                @{user?.username}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );

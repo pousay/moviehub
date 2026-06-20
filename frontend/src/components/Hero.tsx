@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { IconDownload } from "./Icons";
 import type { Media } from "../types/media";
+import { Link } from "react-router-dom";
 
 export default function HeroSlider({ media }: { media: Media[] }) {
   const [idx, setIdx] = useState(0);
@@ -70,10 +71,13 @@ export default function HeroSlider({ media }: { media: Media[] }) {
         </p>
 
         <div className="flex items-center gap-2.5">
-          <button className="hover:scale-105 ease-linear transition-transform duration-100 flex h-11 cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-150">
+          <Link
+            to={`media/${current.id}`}
+            className="hover:scale-105 ease-linear transition-transform duration-100 flex h-11 cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-150"
+          >
             <IconDownload />
             Download
-          </button>
+          </Link>
         </div>
       </div>
 
