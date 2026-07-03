@@ -89,7 +89,14 @@ async def get_random_media(
     )
     media_list = result.scalars().all()
 
-    return [MediaResponseModel.model_validate(m) for m in media_list]
+    _ = []
+    for m in media_list:
+        try:
+            _.append(MediaResponseModel.model_validate(m))
+        except:
+            pass
+
+    return _
 
 
 @router.post("/new", response_model=MediaCreateResponseModel)
