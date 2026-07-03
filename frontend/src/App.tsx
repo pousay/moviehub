@@ -4,6 +4,7 @@ import Media from "./pages/Media";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Settings from "./pages/Settings";
+import Category from "./pages/Category";
 export default function App() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#0a0a0f] font-['Inter',sans-serif] text-[#f0f0f5]">
@@ -13,6 +14,7 @@ export default function App() {
       <div className="relative z-10 flex min-h-screen w-full justify-center align-middle">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/all/:filter" element={<Category />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/media/:id" element={<Media />} />
