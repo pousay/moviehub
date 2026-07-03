@@ -1,9 +1,15 @@
-from enum import Enum
+from enum import Enum, StrEnum
 
 
 class MediaTypes(Enum):
     series = "series"
     movie = "movie"
+
+
+class MediaFilter(StrEnum):
+    all = "all"
+    movie = "movie"
+    series = "series"
 
 
 class LinkLanguage(Enum):

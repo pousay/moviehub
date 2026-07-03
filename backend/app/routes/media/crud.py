@@ -14,10 +14,13 @@ from backend.app.auth.user import check_access_token
 from backend.app.auth.admin import is_admin
 from backend.app.database.schema import User, Media
 from backend.app.database import get_db
+
+from backend.app.utils import MediaFilter, MediaTypes
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
-from typing import Tuple, Optional, Literal
+from typing import Tuple, Optional, Literal, Union
 
 router = APIRouter(
     prefix="/media",
@@ -74,19 +77,28 @@ async def search_media(
     return [MediaResponseModel.model_validate(m) for m in media_list]
 
 
+from typing import Literal
+
+
 @router.get("/random", response_model=list[MediaResponseModel])
 async def get_random_media(
     db: AsyncSession = Depends(get_db),
     count: int = Query(10, ge=1, le=100),
     min_rate: float = Query(0.0, ge=0.0, le=10.0),
+    media_type: MediaFilter = Query(MediaFilter.all),
 ):
-    result = await db.execute(
+    query = (
         select(Media)
         .where(Media.imdb_rate >= min_rate)
-        .order_by(func.random())
-        .limit(count)
         .options(selectinload(Media.links))
     )
+
+    if media_type is not MediaFilter.all:
+        query = query.where(Media.type == MediaTypes(media_type))
+
+    query = query.order_by(func.random()).limit(count)
+
+    result = await db.execute(query)
     media_list = result.scalars().all()
 
     _ = []
