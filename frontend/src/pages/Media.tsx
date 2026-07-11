@@ -7,13 +7,9 @@ import MediaHero from "../components/MediaHero";
 import { fetcher } from "../api/base";
 import type { Media } from "../types/media";
 import MediaPoster from "../components/MediaPoster";
-import Toast from "../components/Toast";
-import Comments from "../components/Comment";
-import DownloadLinks from "../components/DownloadLink";
 import MediaDetails from "../components/MediaDetails";
 export default function Media() {
   const [activeNav, setActiveNav] = useState(0);
-  const [activeTab, setActiveTab] = useState(0);
 
   const { id } = useParams();
 
@@ -36,7 +32,7 @@ export default function Media() {
     <>
       <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
 
-      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Navbar />
       {media ? (
         <main className="sm:ml-[72px] mt-[68px] w-full pb-24 sm:pb-10">
           <MediaHero media={media} />

@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import { IconSearch, IconBell } from "./Icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService, { type Profile } from "../api/auth";
-
-interface NavbarProps {
-  activeTab: number;
-  onTabChange: (idx: number) => void;
+interface Tab {
+  label: string;
+  navigate: string;
 }
+const tabs: Tab[] = [
+  { label: "All", navigate: "all" },
+  { label: "Movies", navigate: "movies" },
+  { label: "TV Series", navigate: "series" },
+];
 
-export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
-  const tabs = ["All", "Movies", "TV Series"];
+export default function Navbar() {
   const [user, setUser] = useState<Profile | null>(null);
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const navigate = useNavigate();
 
+  const changeActiveTab = (tab: Tab, idx: number) => {
+    setActiveTab(idx);
+    navigate("/category/" + tab.navigate);
+  };
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -25,7 +34,17 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
     };
 
     fetchProfile();
-  }, []);
+
+    const currentSegment = location.pathname.split("/").pop() || "";
+
+    const matchingTabIndex = tabs.findIndex(
+      (tab) => currentSegment === tab.navigate,
+    );
+
+    if (matchingTabIndex !== -1) {
+      setActiveTab(matchingTabIndex);
+    }
+  }, [location]);
 
   return (
     <header
@@ -71,8 +90,8 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
       <nav className="hidden-mobile ml-2 flex gap-1">
         {tabs.map((tab, i) => (
           <button
-            key={tab}
-            onClick={() => onTabChange(i)}
+            key={tab.label}
+            onClick={() => changeActiveTab(tab, i)}
             className={`
               nav-tab
               h-9 cursor-pointer rounded-2xl border-0
@@ -86,7 +105,7 @@ export default function Navbar({ activeTab, onTabChange }: NavbarProps) {
               }
             `}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </nav>

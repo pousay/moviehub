@@ -14,7 +14,7 @@ export default function App() {
       <div className="relative z-10 flex min-h-screen w-full justify-center align-middle">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/all/:filter" element={<Category />} />
+          <Route path="/category/:filter" element={<Category />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/media/:id" element={<Media />} />

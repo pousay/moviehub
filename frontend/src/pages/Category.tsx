@@ -8,7 +8,6 @@ import type { Media } from "../types/media";
 
 export default function Category() {
   const [activeNav, setActiveNav] = useState(0);
-  const [activeTab, setActiveTab] = useState(0);
 
   const [media, setMedia] = useState<Media[]>([]);
 
@@ -24,7 +23,7 @@ export default function Category() {
 
   useEffect(() => {
     if (!["all", "movies", "series"].includes(filter ?? "")) {
-      navigate("/all/all", { replace: true });
+      navigate("/category/all", { replace: true });
       return;
     }
 
@@ -40,7 +39,7 @@ export default function Category() {
     <>
       <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
 
-      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Navbar />
 
       <main className="mt-17 min-h-[calc(100vh-68px)] w-full p-4 pb-20 sm:ml-18 sm:p-7 sm:pb-7">
         {media && <SuggestionsGrid only_list={true} media={media} />}
