@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
 tags = [
     {
         "name": "moviehub api",
-        "description": "moviehub api to CRUD links, comments, media, users and etc with authentication",
+        "description": "moviehub api for CRUD links, comments, media, users and etc with authentication",
     }
 ]
 
